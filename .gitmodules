@@ -1,0 +1,3 @@
+[submodule "emojibot"]
+	path = emojibot
+	url = https://github.com/OneStrangeOnion/Emoji-Bot.git
