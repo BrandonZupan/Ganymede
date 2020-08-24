@@ -10,6 +10,7 @@ from helpers.config_loader import ConfigLoader
 
 # Cogs
 from cogs.command_database import CommandDatabase
+from cogs.misc import Miscellaneous
 
 
 logging.basicConfig(level=logging.INFO)
@@ -19,6 +20,7 @@ config_options = [
     "key",
     "prefix",
     "admin_role_ids",
+    "reaction_channel",
     "postgres_username",
     "postgres_password",
     "postgres_db",
@@ -64,6 +66,8 @@ async def run():
     Checks.config = config
 
     # Load cogs
+    bot.add_cog(Miscellaneous(bot, config.get_element("reaction_channel")))
+
     command_db = CommandDatabase(bot, db)
     await command_db.setup()
     bot.add_cog(command_db)
