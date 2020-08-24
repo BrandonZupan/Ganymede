@@ -18,3 +18,10 @@ class Miscellaneous(commands.Cog):
             await ctx.add_reaction('👍')
             await ctx.add_reaction('👎')
             await ctx.add_reaction('🤷')
+
+    @commands.command()
+    async def hello(self, ctx):
+        """
+        Says hello
+        """
+        await ctx.send(f"Hello {ctx.author.display_name}!")
