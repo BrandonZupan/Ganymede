@@ -26,9 +26,10 @@ class CommandDatabase(commands.Cog):
         self.table = "commands"
 
     async def setup(self):
-        await self.db.execute(
-            "CREATE TABLE IF NOT EXISTS commands(command TEXT PRIMARY KEY, response TEXT, category TEXT)"
-        )
+        if self.db is not None:
+            await self.db.execute(
+                "CREATE TABLE IF NOT EXISTS commands(command TEXT PRIMARY KEY, response TEXT, category TEXT)"
+            )
 
     async def add_command(self, ctx, command, response, category):
         """

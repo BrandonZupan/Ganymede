@@ -53,6 +53,10 @@ async def run():
         await sys_conn.close()
 
         db = await asyncpg.create_pool(**credentials)
+    except ConnectionRefusedError:
+        # If no database is installed, set db to none
+        logging.error("Could not connect to database. Database command will not work")
+        db = None
 
     bot = Ganymede(command_prefix=config.get_element("prefix"), db=db)
 
