@@ -24,7 +24,9 @@ config_options = [
     "postgres_username",
     "postgres_password",
     "postgres_db",
-    "postgres_host"
+    "postgres_host",
+    "server_access_roles",
+    "welcome_channel"
 ]
 config = ConfigLoader(config_options, "config.json")
 
@@ -58,7 +60,10 @@ async def run():
         logging.error("Could not connect to database. Database command will not work")
         db = None
 
-    bot = Ganymede(command_prefix=config.get_element("prefix"), db=db)
+    # Intents
+    intents = discord.Intents(members=True, messages=True, guilds=True)
+
+    bot = Ganymede(command_prefix=config.get_element("prefix"), intents=intents, db=db)
 
     # Stop command
     @commands.command()
@@ -70,7 +75,10 @@ async def run():
     Checks.config = config
 
     # Load cogs
-    bot.add_cog(Miscellaneous(bot, config.get_element("reaction_channel")))
+    bot.add_cog(Miscellaneous(bot,
+                              config.get_element("reaction_channel"),
+                              config.get_element("server_access_roles"),
+                              config.get_element("welcome_channel")))
 
     command_db = CommandDatabase(bot, db)
     await command_db.setup()
