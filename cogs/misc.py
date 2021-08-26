@@ -1,8 +1,9 @@
 """
 Miscellaneous commands and features that don't need their own cog
 """
-from discord.ext import commands
+from discord.ext import commands, tasks
 import discord
+import python_weather
 
 
 class Miscellaneous(commands.Cog):
@@ -40,9 +41,27 @@ class Miscellaneous(commands.Cog):
             channel = self.bot.get_channel(self.welcome_channel)
             await channel.send(f"Welcome {after.mention}!")
 
+    @commands.Cog.listener()
+    async def on_ready(self):
+        # await self.get_weather()
+        self.get_weather.start()
+        return
+
     @commands.command()
     async def hello(self, ctx):
         """
         Says hello
         """
         await ctx.send(f"Hello {ctx.author.display_name}!")
+
+    @tasks.loop(minutes=10)
+    async def get_weather(self):
+        weather_client = python_weather.Client(format=python_weather.IMPERIAL)
+        weather = await weather_client.find("78705")
+
+        status = discord.Game(name=f"{weather.current.temperature}°F")
+        # status = discord.Activity(type=discord.ActivityType.custom, name=f"{weather.current.temperature}°F")
+        await self.bot.change_presence(activity=status)
+        await weather_client.close()
+        # print("Changed status")
+

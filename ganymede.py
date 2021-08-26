@@ -12,7 +12,6 @@ from helpers.config_loader import ConfigLoader
 from cogs.command_database import CommandDatabase
 from cogs.misc import Miscellaneous
 
-
 logging.basicConfig(level=logging.INFO)
 
 # Config
@@ -75,10 +74,13 @@ async def run():
     Checks.config = config
 
     # Load cogs
-    bot.add_cog(Miscellaneous(bot,
-                              config.get_element("reaction_channel"),
-                              config.get_element("server_access_roles"),
-                              config.get_element("welcome_channel")))
+    misc = Miscellaneous(bot,
+                         config.get_element("reaction_channel"),
+                         config.get_element("server_access_roles"),
+                         config.get_element("welcome_channel"))
+    bot.add_cog(misc)
+
+    # misc.get_weather.start()
 
     command_db = CommandDatabase(bot, db)
     await command_db.setup()
