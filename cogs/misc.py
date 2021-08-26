@@ -37,9 +37,10 @@ class Miscellaneous(commands.Cog):
             return
 
         # See if this is there only role. If it isn't then don't send message
-        if len(after.roles) == 2:
+#         if len(after.roles) == 2:
+        if True:
             channel = self.bot.get_channel(self.welcome_channel)
-            await channel.send(f"Welcome {after.mention}!")
+            await channel.send(f"Howdy {after.mention}! Be sure to introduce yourself!")
 
     @commands.Cog.listener()
     async def on_ready(self):
