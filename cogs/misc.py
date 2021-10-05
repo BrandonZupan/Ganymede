@@ -23,7 +23,7 @@ class Miscellaneous(commands.Cog):
             await ctx.add_reaction('👎')
             await ctx.add_reaction('🤷')
 
-    @commands.Cog.listener()
+#    @commands.Cog.listener()
     async def on_member_update(self, before, after):
         # Find new role
         # if it exists, see if it is in the list of access roles
