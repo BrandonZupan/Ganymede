@@ -66,12 +66,6 @@ async def run():
 
     bot = Ganymede(command_prefix=config.get_element("prefix"), intents=intents, db=db)
 
-    # Stop command
-    @commands.command()
-    async def stop(self, ctx):
-        await db.close()
-        await self.logout()
-
     # Setup classes
     Checks.config = config
 
