@@ -40,17 +40,20 @@ class Miscellaneous(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message_edit(self, before, after):
-        channel = self.bot.get_channel(self.edit_delete_channel)
+        # only log message changes
+        if before.content != after.content:
 
-        embed=discord.Embed(title=f"Edited message", description=f"Created at {after.created_at} UTC", color=0xffff00)
-        embed.set_author(name=f"{after.author.name}#{after.author.discriminator}")
-        embed.set_thumbnail(url=after.author.avatar_url)
-        embed.add_field(name="Channel", value=f"#{after.channel}", inline=True)
-        embed.add_field(name="Edited Time", value=f"{after.edited_at} UTC", inline=True)
-        embed.add_field(name="Previous Content", value=before.content, inline=False)
-        embed.add_field(name="New Content", value=after.content, inline=False)
-        embed.set_footer(text=f"User ID: {after.author.id}")
-        await channel.send(embed=embed)
+            channel = self.bot.get_channel(self.edit_delete_channel)
+
+            embed=discord.Embed(title=f"Edited message", description=f"Created at {after.created_at} UTC", color=0xffff00)
+            embed.set_author(name=f"{after.author.name}#{after.author.discriminator}")
+            embed.set_thumbnail(url=after.author.avatar_url)
+            embed.add_field(name="Channel", value=f"#{after.channel}", inline=True)
+            embed.add_field(name="Edited Time", value=f"{after.edited_at} UTC", inline=True)
+            embed.add_field(name="Previous Content", value=before.content, inline=False)
+            embed.add_field(name="New Content", value=after.content, inline=False)
+            embed.set_footer(text=f"User ID: {after.author.id}")
+            await channel.send(embed=embed)
 
 #    @commands.Cog.listener()
     async def on_member_update(self, before, after):
@@ -83,6 +86,14 @@ class Miscellaneous(commands.Cog):
         Says hello
         """
         await ctx.send(f"Hello {ctx.author.display_name}!")
+
+    @commands.command()
+    @commands.has_permissions(administrator=True)
+    async def stop_bot(self, ctx):
+        """
+        Stops bot. Please don't run this uwu
+        """
+        await self.bot.close()
 
     @tasks.loop(minutes=10)
     async def get_weather(self):
