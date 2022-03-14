@@ -25,7 +25,8 @@ config_options = [
     "postgres_db",
     "postgres_host",
     "server_access_roles",
-    "welcome_channel"
+    "welcome_channel",
+    "edit_delete_channel"
 ]
 config = ConfigLoader(config_options, "config.json")
 
@@ -77,7 +78,8 @@ async def run():
     misc = Miscellaneous(bot,
                          config.get_element("reaction_channel"),
                          config.get_element("server_access_roles"),
-                         config.get_element("welcome_channel"))
+                         config.get_element("welcome_channel"),
+                         config.get_element("edit_delete_channel"))
     bot.add_cog(misc)
 
     # misc.get_weather.start()
