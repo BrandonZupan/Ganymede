@@ -139,5 +139,5 @@ cython_debug/
 
 # Custom
 config.json
-
+goofystreak/goofystreak.txt
 .idea/

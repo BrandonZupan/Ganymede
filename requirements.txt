@@ -1,3 +1,5 @@
 discord
 asyncpg
 python-weather
+datetime
+time
