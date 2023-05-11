@@ -12,6 +12,7 @@ from helpers.config_loader import ConfigLoader
 # Cogs
 from cogs.command_database import CommandDatabase
 from cogs.misc import Miscellaneous
+from cogs.goofystreak import GoofyStreak
 
 logging.basicConfig(level=logging.INFO)
 
@@ -27,7 +28,10 @@ config_options = [
     "postgres_host",
     "server_access_roles",
     "welcome_channel",
-    "edit_delete_channel"
+    "edit_delete_channel",
+    "speedway_channel_id",
+    "goofy_emote_id",
+    "goofy_streak_filepath"
 ]
 config = ConfigLoader(config_options, "config.json")
 
@@ -82,6 +86,12 @@ async def run():
     command_db = CommandDatabase(bot, db)
     await command_db.setup()
     bot.add_cog(command_db)
+
+    gs = GoofyStreak(bot,
+                     config.get_element("speedway_channel_id"),
+                     config.get_element("goofy_emote_id"),
+                     config.get_element("goofy_streak_filepath"))
+    bot.add_cog(gs)
 
     await bot.start(config.get_element("key"))
 
