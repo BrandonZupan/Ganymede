@@ -23,6 +23,7 @@ endtimes = [
     datetime.time(hour=21, minute=21, tzinfo=utc)
 ]
 
+
 class GoofyTimer(commands.Cog):
     def __init__(self, bot, speedway_channel_id, goofy_emoji_id, filepath):
         self.bot = bot
@@ -68,13 +69,22 @@ class GoofyTimer(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, ctx):
-        if not self.window and ctx.channel != self.speedway:
-            # only act if the window is open and the channel is speedway
+        if not self.goofyEmojiID in ctx.content or ctx.channel != self.speedway:
+            # either goofy not present or not speedway
+            # do nothing in either case
             return
-        if self.goofyEmojiID in ctx.content:
+        localtime = time.localtime()
+        # check for inverse case
+        if localtime.tm_hour == 4 and localtime.tm_min == 20:
+            # its 4:20 am
+            await self.speedway.send("why are you awake. go to bed.")
+        # check for regular case
+        elif self.window:
+            # window is open, it's 4:20 pm
             self.goofydetected = True
             await ctx.add_reaction(self.goofy)
-            return
+        # else do nothing
+        return
 
 
     @tasks.loop(time=endtimes)
